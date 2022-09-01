@@ -26,5 +26,18 @@ func main() {
 
 	for _, c := range colorSchemes {
 		fmt.Println(htmlquery.SelectAttr(c, "id"))
+		node := c.NextSibling
+		for node != nil {
+			if htmlquery.SelectAttr(c.NextSibling, "class") == "gv-colors" {
+				gvColors := c.NextSibling
+				colors, err := htmlquery.QueryAll(gvColors, "//td")
+				if err != nil {
+					panic(err)
+				}
+				for _, node := range colors {
+					fmt.Println(htmlquery.InnerText(node))
+				}
+			}
+		}
 	}
 }
